@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en-US">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Eksame</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="bundle.css">
+</head>
+
+<style>
+  img {
+    width: 50px;
+    height: 50px;
+  }
+
+  ul {
+    list-style: none;
+  }
+</style>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="container">
+          <button class="btn btn-primary" id="GetAll">Hent Alle</button>
+          <table class="table table-striped  table-bordered">
+            <thead class="thead-dark">
+              <tr>
+                <th class="col">Image</th>
+                <th class="col">#</th>
+                <th class="col">Genstand</th>
+                <th class="col">Bud</th>
+                <th class="col">Af</th>
+              </tr>
+            </thead>
+            <tbody id="output_1">
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="row">
+      <div class="container">
+        <div class="col-lg-12">
+          <input type="text" id="Searchbar" class="form-control"
+            placeholder="Skriv ID nummer ind og hent én specifik mønt">
+          <button id="GetId" class="btn btn-success">Hent</button>
+          <div class="" id="output_2"></div>
+        </div>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="row">
+      <div class="container">
+        <div class="col-lg-6">
+          <h4>Tilføj</h4>
+          <div style="width:300px;">
+            <input type="text" id="Genstand" class="form-control" placeholder="Beskrivelse">
+            <input type="file" id="imgPath" accept=".jpg">
+            <div class="" id="output_3"></div>
+          </div>
+          <button id="Add" class="btn btn-success">Tilføj</button>
+        </div>
+
+        <div class="col-lg-6">
+          <h4>Slet!</h4>
+          <div style="width:300px;">
+            <input type="text" id="sletId" class="form-control" placeholder="Skriv ID du vil slette">
+            <div class="" id="output_4"></div>
+          </div>
+          <button id="Slet" class="btn btn-warning">Slet</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script src="bundle.js"></script>
+</body>
+
+</html>
