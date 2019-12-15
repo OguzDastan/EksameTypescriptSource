@@ -3,39 +3,43 @@ import axios, {
     AxiosError
 } from "../../node_modules/axios/index";
 
-interface ICoins {
+interface IWeatherData {
 
     id: number;
-    genstand: string;
-    imgPath: string;
-    offer: number;
-    name: string;
+    temperature: number;
+    pressure: number;
+    humidity: number;
+    time: string;
 }
 
-let baseUri: string = "https://restcoinserviceeksame.azurewebsites.net/api/Coins";
+let baseUri: string = "https://voresvejrstation.azurewebsites.net/api/WeatherDatas";
 
 let buttonElement: HTMLButtonElement = <HTMLButtonElement>document.getElementById("GetAll");
-buttonElement.addEventListener("click", ShowAllCoins);
+buttonElement.addEventListener("click", ShowAllweatherdata);
 let buttonElement_GetId: HTMLButtonElement = <HTMLButtonElement>document.getElementById("GetId");
 buttonElement_GetId.addEventListener("click", getId);
 let buttonElement_Add: HTMLButtonElement = <HTMLButtonElement>document.getElementById("Add");
 buttonElement_Add.addEventListener("click", add);
 let buttonElement_Slet: HTMLButtonElement = <HTMLButtonElement>document.getElementById("Slet");
-buttonElement_Slet.addEventListener("click", deleteCoin);
+buttonElement_Slet.addEventListener("click", deleteweatherdata);
 
 let outputElement: HTMLDivElement = <HTMLDivElement>document.getElementById("output_1");
 
-function recordToString(coins: ICoins): string {
-    return "<img src='" + coins.imgPath + "' Width='50' Height='50'/>" + " " + coins.id + " " + coins.genstand + " " + coins.offer + " " + coins.name;
+function recordToString(weatherdata: IWeatherData): string {
+    return "#" + weatherdata.id  + " Temp" + weatherdata.temperature + " Pres" + weatherdata.pressure + " Hum" + weatherdata.humidity + " time" + weatherdata.time;
+    
 }
 
-function ShowAllCoins(): void {
-    axios.get<ICoins[]>(baseUri)
-        .then(function (response: AxiosResponse<ICoins[]>): void {
+function ShowAllweatherdata(): void {
+    axios.get<IWeatherData[]>(baseUri)
+        .then(function (response: AxiosResponse<IWeatherData[]>): void {
 
             let result: string = "<tr>";
-            response.data.forEach((coin: ICoins) => {
-                result += "<th scope='row'>" + "<img class='img-responsive' src='" + coin.imgPath + "' /></th>" + "<td>" + coin.id + "</td><td>" + coin.genstand + "</td><td>" + coin.offer + "$</td><td>" + coin.name + "</td></tr>";
+            
+            response.data.forEach((weatherdata: IWeatherData) => {
+                result += "<th scope='row'>" + weatherdata.id + "</th>" + "<td>" + weatherdata.temperature + "</td><td>" + weatherdata.pressure + "</td><td>" + weatherdata.humidity + "</td><td>" + weatherdata.time + "</td></tr>";
+                
+                console.log(weatherdata);
             });
             outputElement.innerHTML = result;
         })
@@ -57,7 +61,7 @@ function getId(): void {
     let outputElement: HTMLDivElement = <HTMLDivElement>document.getElementById("output_2");
     let title: string = inputElement.value;
     let uri: string = baseUri + "/" + title;
-    axios.get<ICoins>(uri)
+    axios.get<IWeatherData>(uri)
         .then((Response: AxiosResponse) => {
             if (Response.status == 200) {
 
@@ -77,19 +81,19 @@ function getId(): void {
 
 function add(): void{
     let addPrice: HTMLInputElement = <HTMLInputElement>document.getElementById("Pris");
-    let addGendstand: HTMLInputElement = <HTMLInputElement>document.getElementById("Genstand");
-    let addImgPath: HTMLInputElement = <HTMLInputElement>document.getElementById("imgPath");
-    let myName: string = "Auction";
+    let addGendstand: HTMLInputElement = <HTMLInputElement>document.getElementById("temperature");
+    let addpressure: HTMLInputElement = <HTMLInputElement>document.getElementById("pressure");
+    let mytime: string = "Auction";
     let myPrice: number = 0;
-    let myGenstand: string = addGendstand.value;
-    let myImgPath: string = "../img/" + addImgPath.value;
+    let mytemperature: string = addGendstand.value;
+    let mypressure: string = "../img/" + addpressure.value;
     let outputElement: HTMLDivElement = <HTMLDivElement>document.getElementById("output_3");
-    axios.post<ICoins>(baseUri, { genstand: myGenstand, imgpath: myImgPath, price: myPrice, name: myName })
+    axios.post<IWeatherData>(baseUri, { temperature: mytemperature, pressure: mypressure, price: myPrice, time: mytime })
     .then((response: AxiosResponse) => {
         let message: string = "response " + response.status + " " + response.statusText;
         outputElement.innerHTML = message;
         console.log(message);
-        ShowAllCoins();
+        ShowAllweatherdata();
     })
     .catch((error: AxiosError) => {
         outputElement.innerHTML = error.message;
@@ -98,18 +102,18 @@ function add(): void{
 
 }
 
-function deleteCoin(): void {
+function deleteweatherdata(): void {
     let output: HTMLDivElement = <HTMLDivElement>document.getElementById("output_4");
     let inputElement: HTMLInputElement = <HTMLInputElement>document.getElementById("sletId");
     let id: string = inputElement.value;
     let uri: string = baseUri + "/" + id;
-    axios.delete<ICoins>(uri)
-        .then(function (response: AxiosResponse<ICoins>): void {
+    axios.delete<IWeatherData>(uri)
+        .then(function (response: AxiosResponse<IWeatherData>): void {
             // element.innerHTML = generateSuccessHTMLOutput(response);
             // outputHtmlElement.innerHTML = generateHtmlTable(response.data);
             console.log(JSON.stringify(response));
             output.innerHTML = response.status + " " + response.statusText;
-            ShowAllCoins();
+            ShowAllweatherdata();
         })
         .catch(function (error: AxiosError): void { // error in GET or in generateSuccess?
             if (error.response) {
